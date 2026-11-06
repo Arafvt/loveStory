@@ -3,719 +3,618 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#f7cdd8">
-<title>Для тебя ♡</title>
+<meta name="theme-color" content="#0b0708">
+<title>Билет для тебя</title>
+<meta name="description" content="Премьера для одного зрителя. Завтра в 17:00.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@300;400;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --pink-50:#fff7fa;
-    --pink-100:#fdeaf1;
-    --pink-200:#f9d4e2;
-    --pink-300:#f3b6cd;
-    --pink-400:#e991b3;
-    --pink-500:#d9739b;
-    --wine:#8c4260;
-    --ink:#5c3346;
-    --gold:#e2b979;
-    --card-radius:22px;
+    --bg:#0b0708;
+    --bg-2:#160c0f;
+    --velvet:#7a0f1f;
+    --velvet-dark:#3d0610;
+    --gold:#e8c27a;
+    --gold-soft:#f5dfae;
+    --cream:#fbf3e4;
+    --text:#efe3d3;
+    --muted:#a99482;
+    --rose:#e7738f;
     --ease:cubic-bezier(.22,.61,.36,1);
   }
-
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
-  html{scroll-behavior:smooth}
-
+  html{scroll-behavior:smooth;overflow-x:hidden}
   body{
-    font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    color:var(--ink);
-    background:var(--pink-50);
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Oswald',system-ui,sans-serif;
+    font-weight:300;
     overflow-x:hidden;
-    line-height:1.65;
     -webkit-font-smoothing:antialiased;
+    line-height:1.6;
   }
+  body.locked{overflow:hidden;height:100svh}
 
-  /* мягкий розовый градиент на весь фон */
-  .bg{
-    position:fixed;
-    inset:0;
-    z-index:-2;
-    background:
-      radial-gradient(1200px 700px at 15% -5%, #ffe6ef 0%, transparent 60%),
-      radial-gradient(900px 600px at 100% 20%, #ffd9e8 0%, transparent 55%),
-      radial-gradient(1000px 800px at 50% 110%, #fbdcea 0%, transparent 60%),
-      linear-gradient(180deg,#fff9fb 0%,#fdeef4 45%,#fbe3ee 100%);
-  }
-  .bg::after{
-    content:"";
-    position:absolute;inset:0;
-    background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.5),transparent 45%);
-  }
-
-  /* ── падающие лепестки ─────────────────────────── */
-  .petals{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
-  .petal{
-    position:absolute;top:-8vh;
-    opacity:0;
-    animation:fall linear infinite;
-    will-change:transform;
-  }
-  .petal span{
-    display:block;width:100%;height:100%;
-    background:linear-gradient(135deg,var(--pink-200),var(--pink-400));
-    border-radius:100% 0 100% 0;
-    animation:sway ease-in-out infinite alternate;
-    opacity:.55;
-  }
-  @keyframes fall{
-    0%{transform:translate3d(0,-10vh,0) rotate(0deg);opacity:0}
-    8%{opacity:.9}
-    92%{opacity:.7}
-    100%{transform:translate3d(6vw,110vh,0) rotate(420deg);opacity:0}
-  }
-  @keyframes sway{from{transform:translateX(-14px) rotate(-18deg)}to{transform:translateX(14px) rotate(18deg)}}
-
-  /* ── общая раскладка ───────────────────────────── */
-  .wrap{max-width:560px;margin:0 auto;padding:0 24px}
-
-  section{padding:14vh 0;position:relative}
-
-  h1,h2,h3,.serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;letter-spacing:.01em}
-
+  .serif{font-family:'Playfair Display',Georgia,serif}
   .hand{font-family:'Caveat',cursive}
 
-  /* ── появление при скролле ─────────────────────── */
+  /* ── плёночное зерно + мерцание проектора ───────────── */
+  .grain{
+    position:fixed;inset:0;z-index:60;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.55'/></svg>");
+    opacity:.07;
+    animation:grain .6s steps(4) infinite;
+  }
+  @keyframes grain{
+    0%{background-position:0 0}25%{background-position:-37px 21px}
+    50%{background-position:23px -41px}75%{background-position:-19px -13px}100%{background-position:11px 33px}
+  }
+  .vignette{
+    position:fixed;inset:0;z-index:59;pointer-events:none;
+    background:radial-gradient(ellipse at 50% 40%,transparent 45%,rgba(0,0,0,.65) 100%);
+  }
+  .beam{
+    position:fixed;top:0;left:0;right:0;height:100vh;z-index:0;pointer-events:none;
+    background:conic-gradient(from 180deg at 50% 0%,transparent 165deg,rgba(255,230,180,.07) 175deg,rgba(255,240,210,.11) 180deg,rgba(255,230,180,.07) 185deg,transparent 195deg);
+    animation:flicker 4s infinite;
+  }
+  @keyframes flicker{
+    0%,100%{opacity:1}3%{opacity:.75}6%{opacity:1}41%{opacity:.9}43%{opacity:1}77%{opacity:.8}78%{opacity:1}
+  }
+  .dust{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  .dust i{
+    position:absolute;border-radius:50%;
+    background:rgba(255,236,200,.55);
+    animation:drift linear infinite;
+  }
+  @keyframes drift{
+    from{transform:translate3d(0,0,0);opacity:0}
+    15%{opacity:.8}85%{opacity:.6}
+    to{transform:translate3d(var(--dx),-40vh,0);opacity:0}
+  }
+
+  /* ── ИНТРО: тёмный зал ──────────────────────────────── */
+  #intro{
+    position:fixed;inset:0;z-index:40;
+    background:#000;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;
+    transition:opacity 1s var(--ease);
+  }
+  #intro.gone{opacity:0;pointer-events:none}
+  .intro-small{
+    font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;color:var(--muted);
+    padding-left:.5em;margin-bottom:22px;
+  }
+  .intro-title{
+    font-family:'Playfair Display',serif;font-style:italic;
+    font-size:clamp(1.7rem,7vw,2.6rem);color:var(--gold-soft);line-height:1.2;
+    margin-bottom:44px;
+  }
+  .play{
+    position:relative;
+    width:96px;height:96px;border-radius:50%;
+    border:1px solid rgba(232,194,122,.55);
+    background:radial-gradient(circle,rgba(232,194,122,.16),transparent 70%);
+    display:grid;place-items:center;cursor:pointer;
+    color:var(--gold);
+    animation:pulse 2.2s var(--ease) infinite;
+  }
+  .play svg{width:30px;height:30px;margin-left:5px;fill:currentColor}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(232,194,122,.45)}
+    70%{box-shadow:0 0 0 26px rgba(232,194,122,0)}
+    100%{box-shadow:0 0 0 0 rgba(232,194,122,0)}
+  }
+  .intro-hint{margin-top:22px;font-size:.7rem;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);padding-left:.35em}
+
+  /* обратный отсчёт с плёнки */
+  .leader{
+    position:absolute;inset:0;display:none;
+    align-items:center;justify-content:center;
+    background:#d9d2c3;
+    animation:leaderFlicker .12s infinite;
+  }
+  .leader.on{display:flex}
+  @keyframes leaderFlicker{0%,100%{filter:brightness(1)}50%{filter:brightness(.93)}}
+  .leader::before,.leader::after{
+    content:"";position:absolute;background:#2a2522;
+  }
+  .leader::before{left:0;right:0;top:50%;height:2px}
+  .leader::after{top:0;bottom:0;left:50%;width:2px}
+  .leader-ring{
+    position:relative;z-index:2;
+    width:min(70vw,340px);aspect-ratio:1;border-radius:50%;
+    border:3px solid #2a2522;
+    display:grid;place-items:center;
+    background:conic-gradient(rgba(42,37,34,.55) var(--a,0deg),transparent 0);
+  }
+  .leader-ring::before{
+    content:"";position:absolute;inset:9%;border-radius:50%;border:2px solid #2a2522;
+  }
+  .leader-num{
+    font-family:'Oswald',sans-serif;font-weight:600;
+    font-size:min(42vw,200px);line-height:1;color:#1d1917;
+  }
+
+  /* ── ЗАНАВЕС ────────────────────────────────────────── */
+  .curtain{
+    position:fixed;top:0;bottom:0;width:51%;z-index:30;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(0,0,0,.38) 0px,rgba(0,0,0,0) 18px,rgba(255,255,255,.07) 30px,rgba(0,0,0,0) 42px,rgba(0,0,0,.38) 60px),
+      linear-gradient(180deg,#9a1528 0%,var(--velvet) 50%,var(--velvet-dark) 100%);
+    transition:transform 2.4s cubic-bezier(.7,0,.2,1),visibility 0s 2.4s;
+    box-shadow:0 0 60px rgba(0,0,0,.8);
+  }
+  .curtain.l{left:0;transform-origin:left}
+  .curtain.r{right:0;transform-origin:right}
+  .curtain::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:16px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 6px,#b38a45 6px 12px);
+    opacity:.85;
+  }
+  body.open .curtain.l{transform:translateX(-100%) scaleX(.6)}
+  body.open .curtain.r{transform:translateX(100%) scaleX(.6)}
+  body.open .curtain{visibility:hidden}
+  .valance{
+    position:fixed;top:0;left:0;right:0;height:56px;z-index:31;
+    background:
+      radial-gradient(ellipse 40px 26px at 40px 0,var(--velvet-dark) 98%,transparent) 0 0/80px 56px repeat-x,
+      linear-gradient(180deg,#5a0a17,var(--velvet));
+    box-shadow:0 8px 30px rgba(0,0,0,.6);
+    transition:transform 1.6s var(--ease) 1.4s;
+  }
+  body.open .valance{transform:translateY(-100%)}
+
+  /* ── раскладка ──────────────────────────────────────── */
+  main{position:relative;z-index:2}
+  .wrap{max-width:620px;margin:0 auto;padding:0 20px}
+  section{padding:13vh 0;position:relative}
+
   .reveal{
-    opacity:0;
-    transform:translateY(34px);
-    filter:blur(6px);
+    opacity:0;transform:translateY(30px);filter:blur(6px);
     transition:opacity 1.1s var(--ease),transform 1.1s var(--ease),filter 1.1s var(--ease);
     transition-delay:var(--d,0ms);
   }
-  .reveal.in{opacity:1;transform:none;filter:blur(0)}
+  .reveal.in{opacity:1;transform:none;filter:none}
+
+  /* ── HERO ───────────────────────────────────────────── */
+  .hero{
+    min-height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:12vh 20px 14vh;
+  }
+  .studio{
+    font-size:.72rem;letter-spacing:.55em;text-transform:uppercase;color:var(--muted);
+    padding-left:.55em;
+  }
+  .hero h1{
+    margin-top:26px;
+    font-family:'Playfair Display',serif;font-weight:400;
+    font-size:clamp(3rem,15vw,5.6rem);line-height:1;
+    color:var(--gold-soft);
+    text-shadow:0 0 40px rgba(232,194,122,.25);
+  }
+  .hero h1 em{display:block;font-style:italic;color:var(--gold);font-size:.82em;margin-top:.08em}
+  .hero .tag{
+    margin-top:30px;font-size:1rem;letter-spacing:.06em;color:var(--text);opacity:.85;max-width:22em;
+  }
+  .stars{margin-top:28px;color:var(--gold);letter-spacing:.5em;font-size:.9rem;padding-left:.5em}
+  .scroll-hint{
+    position:absolute;bottom:4vh;left:50%;transform:translateX(-50%);
+    font-size:.66rem;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);
+    display:flex;flex-direction:column;align-items:center;gap:10px;padding-left:.4em;
+    animation:bob 2.6s ease-in-out infinite;
+  }
+  .scroll-hint i{width:1px;height:38px;background:linear-gradient(var(--gold),transparent)}
+  @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+  /* ── плёнка-разделитель ─────────────────────────────── */
+  .filmstrip{
+    height:46px;margin:0 -20px;
+    background:
+      repeating-linear-gradient(90deg,transparent 0 10px,#000 10px 22px) top/100% 9px no-repeat,
+      repeating-linear-gradient(90deg,transparent 0 10px,#000 10px 22px) bottom/100% 9px no-repeat,
+      #2b2220;
+    border-top:3px solid #2b2220;border-bottom:3px solid #2b2220;
+    background-color:#2b2220;
+    position:relative;overflow:hidden;
+  }
+  .filmstrip::before{
+    content:"";position:absolute;left:0;right:0;top:3px;height:6px;
+    background:repeating-linear-gradient(90deg,#efe3d3 0 8px,transparent 8px 22px);
+    opacity:.85;animation:roll 1.6s linear infinite;
+  }
+  .filmstrip::after{
+    content:"";position:absolute;left:0;right:0;bottom:3px;height:6px;
+    background:repeating-linear-gradient(90deg,#efe3d3 0 8px,transparent 8px 22px);
+    opacity:.85;animation:roll 1.6s linear infinite;
+  }
+  @keyframes roll{from{background-position:0 0}to{background-position:-88px 0}}
+
+  /* ── ТИТРЫ ──────────────────────────────────────────── */
+  .credits{text-align:center}
+  .credits .eyebrow,.eyebrow{
+    display:block;font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--rose);
+    padding-left:.5em;margin-bottom:34px;
+  }
+  .credit{margin-bottom:34px}
+  .credit .role{
+    font-size:.72rem;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);padding-left:.38em;
+  }
+  .credit .name{
+    margin-top:4px;
+    font-family:'Playfair Display',serif;font-size:clamp(1.6rem,7vw,2.2rem);color:var(--cream);line-height:1.2;
+  }
+  .credit .name em{color:var(--gold);font-style:italic}
+
+  /* ── ГЛАВНАЯ СЦЕНА: табло с лампочками ──────────────── */
+  .scene{text-align:center}
+  .scene .lead{
+    font-family:'Playfair Display',serif;font-size:clamp(1.35rem,5.6vw,1.8rem);line-height:1.5;color:var(--cream);
+  }
+  .scene .lead em{color:var(--gold);font-style:italic}
+
+  .marquee{
+    position:relative;margin:48px auto 0;
+    max-width:520px;
+    padding:30px 22px;
+    border-radius:14px;
+    background:linear-gradient(180deg,#2a1214,#140809);
+    border:2px solid #4b2a1c;
+    box-shadow:0 0 0 6px #1a0c0b,0 30px 70px rgba(0,0,0,.6),0 0 90px rgba(232,194,122,.12);
+  }
+  .bulbs{position:absolute;inset:8px;pointer-events:none}
+  .bulbs b{
+    position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;
+    background:#ffe9b0;
+    box-shadow:0 0 6px 2px rgba(255,214,130,.85),0 0 16px 4px rgba(255,190,90,.35);
+    animation:bulb 1.2s steps(1) infinite;
+  }
+  .bulbs b:nth-child(even){animation-delay:.6s}
+  @keyframes bulb{0%{opacity:1}50%{opacity:.25;box-shadow:none}}
+  .marquee .now{
+    font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;color:var(--rose);padding-left:.5em;
+  }
+  .marquee .big{
+    margin-top:10px;
+    font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;
+    font-size:clamp(2.3rem,12vw,3.6rem);line-height:1.02;letter-spacing:.04em;
+    color:#fff3d6;
+    text-shadow:0 0 10px rgba(255,214,140,.7),0 0 30px rgba(255,170,80,.45);
+  }
+  .marquee .big span{color:var(--gold)}
+  .marquee .small{margin-top:12px;font-size:.95rem;letter-spacing:.12em;color:var(--gold-soft);text-transform:uppercase}
+
+  .scene .after{margin-top:46px;font-size:1.05rem;color:var(--text);opacity:.9;letter-spacing:.02em}
+  .scene .after + .after{margin-top:14px}
+
+  /* ── БИЛЕТ ──────────────────────────────────────────── */
+  .ticket-section{text-align:center}
+  .ticket-wrap{position:relative;margin-top:10px;perspective:1200px}
+  .ticket{
+    position:relative;display:flex;
+    text-align:left;color:#3a1d14;
+    filter:drop-shadow(0 30px 50px rgba(0,0,0,.55));
+  }
+  .t-main,.t-stub{
+    background:
+      radial-gradient(circle at 0 0,transparent 0,transparent 0),
+      linear-gradient(135deg,#fbf0d6 0%,#f3dca8 55%,#e9c98a 100%);
+    position:relative;
+  }
+  .t-main{
+    flex:1;padding:24px 22px 22px 26px;border-radius:16px 0 0 16px;
+    -webkit-mask:radial-gradient(circle 12px at 100% 0,transparent 98%,#000) top right/100% 51% no-repeat,
+                 radial-gradient(circle 12px at 100% 100%,transparent 98%,#000) bottom right/100% 51% no-repeat;
+            mask:radial-gradient(circle 12px at 100% 0,transparent 98%,#000) top right/100% 51% no-repeat,
+                 radial-gradient(circle 12px at 100% 100%,transparent 98%,#000) bottom right/100% 51% no-repeat;
+  }
+  .t-main::before{
+    content:"";position:absolute;inset:9px;border:1px dashed rgba(122,15,31,.35);border-radius:10px;pointer-events:none;
+  }
+  .t-stub{
+    width:118px;padding:20px 12px;border-radius:0 16px 16px 0;
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    border-left:2px dashed rgba(122,15,31,.45);
+    cursor:pointer;
+    -webkit-mask:radial-gradient(circle 12px at 0 0,transparent 98%,#000) top left/100% 51% no-repeat,
+                 radial-gradient(circle 12px at 0 100%,transparent 98%,#000) bottom left/100% 51% no-repeat;
+            mask:radial-gradient(circle 12px at 0 0,transparent 98%,#000) top left/100% 51% no-repeat,
+                 radial-gradient(circle 12px at 0 100%,transparent 98%,#000) bottom left/100% 51% no-repeat;
+    transition:transform 1.2s cubic-bezier(.55,0,.6,1),opacity 1.2s ease;
+    transform-origin:0 100%;
+  }
+  .ticket.torn .t-stub{transform:translate(40px,120vh) rotate(38deg);opacity:0;pointer-events:none}
+  .t-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .t-brand{font-size:.66rem;letter-spacing:.4em;text-transform:uppercase;color:var(--velvet);font-weight:400}
+  .t-no{font-size:.66rem;letter-spacing:.2em;color:#8a5a3a}
+  .t-title{
+    margin-top:10px;font-family:'Playfair Display',serif;font-weight:700;
+    font-size:clamp(1.5rem,6.4vw,2rem);line-height:1.08;color:var(--velvet);
+  }
+  .t-title em{font-weight:400;font-style:italic;color:#9b4a2c}
+  .t-grid{
+    margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;
+  }
+  .t-grid div{min-width:0}
+  .t-grid small{
+    display:block;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:#8a5a3a;
+  }
+  .t-grid strong{
+    display:block;font-family:'Oswald',sans-serif;font-weight:600;font-size:1.15rem;line-height:1.2;color:#3a1d14;
+  }
+  .t-grid .wide{grid-column:1/-1}
+  .t-note{margin-top:14px;font-family:'Caveat',cursive;font-size:1.3rem;color:var(--velvet);line-height:1.2}
+
+  .stub-label{
+    writing-mode:vertical-rl;transform:rotate(180deg);
+    font-size:.7rem;letter-spacing:.45em;text-transform:uppercase;color:var(--velvet);font-weight:400;
+  }
+  .stub-time{font-family:'Oswald',sans-serif;font-weight:600;font-size:1.5rem;color:#3a1d14;line-height:1}
+  .barcode{
+    width:70px;height:46px;
+    background:repeating-linear-gradient(90deg,#3a1d14 0 2px,transparent 2px 4px,#3a1d14 4px 5px,transparent 5px 8px,#3a1d14 8px 11px,transparent 11px 12px);
+    opacity:.85;
+  }
+  .stub-cta{
+    font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--velvet);text-align:center;line-height:1.5;
+    animation:nudge 1.8s ease-in-out infinite;
+  }
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+  @media (max-width:440px){
+    .ticket{flex-direction:column}
+    .t-main{
+      border-radius:16px 16px 0 0;
+      -webkit-mask:radial-gradient(circle 12px at 0 100%,transparent 98%,#000) bottom left/51% 100% no-repeat,
+                   radial-gradient(circle 12px at 100% 100%,transparent 98%,#000) bottom right/51% 100% no-repeat;
+              mask:radial-gradient(circle 12px at 0 100%,transparent 98%,#000) bottom left/51% 100% no-repeat,
+                   radial-gradient(circle 12px at 100% 100%,transparent 98%,#000) bottom right/51% 100% no-repeat;
+    }
+    .t-stub{
+      width:auto;flex-direction:row;padding:16px 22px;
+      border-radius:0 0 16px 16px;border-left:none;border-top:2px dashed rgba(122,15,31,.45);
+      -webkit-mask:radial-gradient(circle 12px at 0 0,transparent 98%,#000) top left/51% 100% no-repeat,
+                   radial-gradient(circle 12px at 100% 0,transparent 98%,#000) top right/51% 100% no-repeat;
+              mask:radial-gradient(circle 12px at 0 0,transparent 98%,#000) top left/51% 100% no-repeat,
+                   radial-gradient(circle 12px at 100% 0,transparent 98%,#000) top right/51% 100% no-repeat;
+      transform-origin:100% 0;
+    }
+    .stub-label{writing-mode:horizontal-tb;transform:none;letter-spacing:.3em}
+    .barcode{width:60px;height:34px}
+    .ticket.torn .t-stub{transform:translate(30px,120vh) rotate(-24deg)}
+  }
+
+  .tear-btn{
+    margin-top:34px;
+    border:1px solid rgba(232,194,122,.6);background:linear-gradient(180deg,rgba(232,194,122,.18),rgba(232,194,122,.06));
+    color:var(--gold-soft);
+    font-family:'Oswald',sans-serif;font-size:.9rem;letter-spacing:.24em;text-transform:uppercase;
+    padding:16px 30px;border-radius:100px;cursor:pointer;
+    transition:transform .25s var(--ease),opacity .6s,background .3s;
+    box-shadow:0 0 30px rgba(232,194,122,.15);
+  }
+  .tear-btn:hover{background:rgba(232,194,122,.25)}
+  .tear-btn:active{transform:scale(.96)}
+  .tear-btn.hide{opacity:0;pointer-events:none;transform:scale(.9)}
+  .tear-hint{margin-top:12px;font-size:.72rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;transition:opacity .6s}
+  .tear-hint.hide{opacity:0}
+
+  .confirmed{
+    max-height:0;overflow:hidden;opacity:0;transform:translateY(16px);
+    transition:max-height 1s var(--ease),opacity 1s .3s var(--ease),transform 1s .3s var(--ease);
+  }
+  .confirmed.show{max-height:400px;opacity:1;transform:none}
+  .confirmed .stamp{
+    display:inline-block;margin-top:10px;
+    font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:.3em;text-transform:uppercase;font-size:1.05rem;
+    color:var(--rose);border:2px solid var(--rose);border-radius:8px;padding:8px 18px 8px calc(18px + .3em);
+    transform:rotate(-6deg);
+  }
+  .confirmed.show .stamp{animation:stamp .6s cubic-bezier(.2,1.6,.4,1) .4s both}
+  @keyframes stamp{from{transform:rotate(-6deg) scale(2.4);opacity:0}to{transform:rotate(-6deg) scale(1);opacity:1}}
+  .confirmed p{margin-top:22px;font-family:'Playfair Display',serif;font-style:italic;font-size:1.35rem;color:var(--cream);line-height:1.45}
+
+  /* ── ОТСЧЁТ ─────────────────────────────────────────── */
+  .countdown{text-align:center}
+  .clock{display:flex;justify-content:center;gap:10px;margin-top:6px}
+  .unit{
+    min-width:76px;padding:16px 6px 12px;border-radius:12px;
+    background:linear-gradient(180deg,#1d1012,#120a0b);
+    border:1px solid rgba(232,194,122,.22);
+  }
+  .unit b{
+    display:block;font-family:'Oswald',sans-serif;font-weight:400;font-size:clamp(2rem,10vw,2.8rem);line-height:1;color:var(--gold-soft);
+    font-variant-numeric:tabular-nums;
+  }
+  .unit small{display:block;margin-top:8px;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);padding-left:.3em}
+  .count-note{margin-top:22px;font-size:1rem;color:var(--text);opacity:.85}
+
+  /* ── ФИНАЛ ──────────────────────────────────────────── */
+  .finale{min-height:80svh;display:flex;align-items:center;justify-content:center;text-align:center}
+  .finale .the-end{
+    font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(2.6rem,12vw,4rem);color:var(--gold-soft);line-height:1;
+  }
+  .finale .the-end s{text-decoration-thickness:2px;text-decoration-color:var(--rose);opacity:.7}
+  .finale p{margin-top:22px;font-size:1.05rem;letter-spacing:.04em}
+  .finale .sign{margin-top:34px;font-family:'Caveat',cursive;font-size:1.8rem;color:var(--rose)}
+
+  /* попкорн и сердечки */
+  .pop{
+    position:fixed;top:-40px;z-index:55;pointer-events:none;
+    animation:popfall linear forwards;
+  }
+  @keyframes popfall{
+    0%{transform:translateY(0) rotate(0);opacity:1}
+    100%{transform:translateY(112vh) rotate(var(--r,360deg));opacity:.2}
+  }
 
   @media (prefers-reduced-motion:reduce){
     .reveal{opacity:1;transform:none;filter:none;transition:none}
-    .petal{display:none}
-    html{scroll-behavior:auto}
-  }
-
-  /* ── HERO ──────────────────────────────────────── */
-  .hero{
-    min-height:100svh;
-    display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
-    text-align:center;
-    padding:12vh 24px 10vh;
-  }
-
-  .heart-seal{
-    width:76px;height:76px;
-    margin-bottom:28px;
-    display:grid;place-items:center;
-    border-radius:50%;
-    background:linear-gradient(145deg,#fff,var(--pink-100));
-    box-shadow:0 10px 30px rgba(217,115,155,.28),inset 0 1px 0 #fff;
-    animation:beat 2.4s var(--ease) infinite;
-  }
-  .heart-seal svg{width:34px;height:34px;fill:var(--pink-500)}
-  @keyframes beat{
-    0%,100%{transform:scale(1)}
-    14%{transform:scale(1.12)}
-    28%{transform:scale(1)}
-    42%{transform:scale(1.08)}
-  }
-
-  .hero .kicker{
-    font-size:.7rem;letter-spacing:.42em;text-transform:uppercase;
-    color:var(--pink-500);font-weight:500;
-    margin-bottom:18px;padding-left:.42em;
-  }
-
-  .hero h1{
-    font-size:clamp(2.9rem,15vw,4.4rem);
-    line-height:1.02;
-    color:var(--wine);
-  }
-  .hero h1 em{
-    display:block;
-    font-style:italic;
-    color:var(--pink-500);
-    font-size:.92em;
-  }
-
-  .hero .sub{
-    margin-top:26px;
-    font-size:1rem;
-    font-weight:300;
-    color:#8b6274;
-    max-width:20em;
-  }
-
-  .divider{
-    width:1px;height:64px;margin:44px auto 0;
-    background:linear-gradient(180deg,transparent,var(--pink-300),transparent);
-  }
-
-  .scroll-hint{
-    position:absolute;bottom:5vh;left:50%;transform:translateX(-50%);
-    font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;
-    color:var(--pink-400);
-    display:flex;flex-direction:column;align-items:center;gap:10px;
-    animation:float 2.6s ease-in-out infinite;
-  }
-  .scroll-hint .arrow{
-    width:20px;height:20px;
-    border-right:1.5px solid var(--pink-400);
-    border-bottom:1.5px solid var(--pink-400);
-    transform:rotate(45deg);
-  }
-  @keyframes float{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
-
-  /* ── текстовые блоки ───────────────────────────── */
-  .lead{
-    font-family:'Cormorant Garamond',Georgia,serif;
-    font-size:clamp(1.5rem,6vw,2rem);
-    line-height:1.45;
-    color:var(--wine);
-    text-align:center;
-  }
-  .lead .accent{font-style:italic;color:var(--pink-500)}
-
-  .body-text{
-    margin-top:26px;
-    font-size:1rem;
-    font-weight:300;
-    color:#7d5266;
-    text-align:center;
-  }
-  .body-text + .body-text{margin-top:18px}
-
-  .section-title{
-    text-align:center;
-    margin-bottom:44px;
-  }
-  .section-title .eyebrow{
-    font-size:.66rem;letter-spacing:.36em;text-transform:uppercase;
-    color:var(--pink-400);font-weight:500;
-    display:block;margin-bottom:14px;padding-left:.36em;
-  }
-  .section-title h2{
-    font-size:clamp(1.9rem,8vw,2.6rem);
-    color:var(--wine);
-    line-height:1.15;
-  }
-  .section-title h2 em{font-style:italic;color:var(--pink-500)}
-
-  /* ── ОТКРЫТКИ ──────────────────────────────────── */
-  .cards{display:flex;flex-direction:column;gap:18px}
-
-  .card{
-    perspective:1400px;
-    cursor:pointer;
-    min-height:150px;
-  }
-  .card-inner{
-    position:relative;
-    width:100%;min-height:150px;
-    transform-style:preserve-3d;
-    transition:transform .85s var(--ease);
-  }
-  .card.open .card-inner{transform:rotateY(180deg)}
-
-  .face{
-    position:absolute;inset:0;
-    -webkit-backface-visibility:hidden;
-    backface-visibility:hidden;
-    border-radius:var(--card-radius);
-    padding:26px 24px;
-    display:flex;flex-direction:column;justify-content:center;
-    box-shadow:0 12px 34px rgba(180,100,135,.16),0 2px 8px rgba(180,100,135,.08);
-  }
-
-  .front{
-    background:linear-gradient(160deg,#fff 0%,var(--pink-100) 100%);
-    align-items:center;text-align:center;gap:12px;
-    border:1px solid rgba(255,255,255,.9);
-  }
-  .front .icon{font-size:1.7rem;line-height:1}
-  .front .label{
-    font-family:'Cormorant Garamond',serif;
-    font-size:1.4rem;color:var(--wine);
-  }
-  .front .tap{
-    font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;
-    color:var(--pink-400);padding-left:.26em;
-  }
-
-  .back{
-    transform:rotateY(180deg);
-    background:linear-gradient(160deg,var(--pink-400) 0%,var(--pink-500) 100%);
-    color:#fff;
-    border:1px solid rgba(255,255,255,.25);
-  }
-  .back p{
-    font-family:'Cormorant Garamond',serif;
-    font-size:1.22rem;line-height:1.5;font-style:italic;
-    text-align:center;
-  }
-  .back .sig{
-    margin-top:14px;text-align:center;
-    font-family:'Caveat',cursive;font-size:1.1rem;
-    opacity:.85;
-  }
-
-  /* лёгкий блик на открытке */
-  .front::after{
-    content:"";position:absolute;inset:0;border-radius:var(--card-radius);
-    background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);
-    opacity:0;transition:opacity .4s;
-    pointer-events:none;
-  }
-  .card:active .front::after{opacity:1}
-
-  /* ── ЦИТАТА ────────────────────────────────────── */
-  .quote{
-    text-align:center;
-    padding:38px 26px;
-    border-radius:26px;
-    background:rgba(255,255,255,.55);
-    border:1px solid rgba(255,255,255,.85);
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-    box-shadow:0 14px 40px rgba(180,100,135,.12);
-  }
-  .quote .mark{
-    font-family:'Cormorant Garamond',serif;
-    font-size:3.4rem;line-height:.6;color:var(--pink-300);
-    display:block;margin-bottom:14px;
-  }
-  .quote p{
-    font-family:'Cormorant Garamond',serif;
-    font-style:italic;font-size:1.35rem;line-height:1.55;
-    color:var(--wine);
-  }
-
-  /* ── КОНВЕРТ / ПИСЬМО ──────────────────────────── */
-  .envelope-stage{
-    display:flex;flex-direction:column;align-items:center;
-  }
-
-  .envelope{
-    position:relative;
-    width:min(300px,80vw);
-    aspect-ratio:3/2;
-    cursor:pointer;
-    transition:transform .6s var(--ease);
-  }
-  .envelope:active{transform:scale(.97)}
-
-  .env-body{
-    position:absolute;inset:0;
-    background:linear-gradient(160deg,var(--pink-200),var(--pink-300));
-    border-radius:12px;
-    box-shadow:0 18px 44px rgba(180,100,135,.26);
-    overflow:hidden;
-    z-index:3;
-  }
-  .env-body::before,.env-body::after{
-    content:"";position:absolute;bottom:0;width:52%;height:100%;
-    background:linear-gradient(160deg,var(--pink-100),var(--pink-200));
-  }
-  .env-body::before{left:0;clip-path:polygon(0 0,0 100%,100% 100%)}
-  .env-body::after{right:0;clip-path:polygon(100% 0,100% 100%,0 100%)}
-
-  .env-flap{
-    position:absolute;top:0;left:0;right:0;height:62%;
-    background:linear-gradient(180deg,var(--pink-300),var(--pink-400));
-    clip-path:polygon(0 0,100% 0,50% 100%);
-    transform-origin:top center;
-    transform:rotateX(0deg);
-    transition:transform .7s var(--ease),z-index 0s .35s;
-    border-radius:12px 12px 0 0;
-    z-index:5;
-  }
-  .envelope.open .env-flap{transform:rotateX(180deg);z-index:1}
-
-  .env-seal{
-    position:absolute;top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    width:46px;height:46px;border-radius:50%;
-    background:radial-gradient(circle at 35% 30%,#f28fb0,var(--pink-500));
-    display:grid;place-items:center;
-    box-shadow:0 4px 14px rgba(140,66,96,.35);
-    z-index:6;
-    transition:opacity .35s,transform .5s var(--ease);
-  }
-  .env-seal svg{width:20px;height:20px;fill:#fff8fb}
-  .envelope.open .env-seal{opacity:0;transform:translate(-50%,-50%) scale(.5)}
-
-  .env-hint{
-    margin-top:22px;
-    font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;
-    color:var(--pink-400);padding-left:.3em;
-    transition:opacity .4s;
-  }
-  .envelope-stage.opened .env-hint{opacity:0}
-
-  .letter{
-    max-height:0;opacity:0;
-    overflow:hidden;
-    transform:translateY(-16px);
-    transition:max-height 1.1s var(--ease),opacity .9s .25s var(--ease),transform 1s .25s var(--ease),margin .9s var(--ease);
-    width:100%;
-  }
-  .letter.show{
-    max-height:2200px;opacity:1;transform:none;margin-top:34px;
-  }
-  .letter-paper{
-    background:linear-gradient(180deg,#fffdfe,#fff6f9);
-    border-radius:18px;
-    padding:34px 26px;
-    box-shadow:0 20px 50px rgba(180,100,135,.18);
-    border:1px solid rgba(255,255,255,.9);
-    position:relative;
-  }
-  .letter-paper::before{
-    content:"";position:absolute;left:26px;right:26px;top:0;height:3px;
-    background:linear-gradient(90deg,transparent,var(--pink-300),transparent);
-  }
-  .letter-paper p{
-    font-family:'Cormorant Garamond',serif;
-    font-size:1.16rem;line-height:1.72;color:var(--ink);
-  }
-  .letter-paper p + p{margin-top:16px}
-  .letter-paper .sign{
-    margin-top:26px;text-align:right;
-    font-family:'Caveat',cursive;
-    font-size:1.5rem;color:var(--pink-500);
-  }
-
-  /* фото внутри конверта */
-  .photo-card{
-    background:linear-gradient(180deg,#fffdfe,#fff6f9);
-    border-radius:18px;
-    padding:14px 14px 8px;
-    box-shadow:0 20px 50px rgba(180,100,135,.2);
-    border:1px solid rgba(255,255,255,.9);
-    transform:rotate(-1.4deg);
-  }
-  .photo-card img{
-    display:block;width:100%;height:auto;
-    border-radius:12px;
-    background:var(--pink-100);
-  }
-  .photo-card figcaption{
-    font-family:'Caveat',cursive;
-    font-size:1.35rem;color:var(--pink-500);
-    text-align:center;padding:12px 0 6px;
-  }
-
-  /* ── ФИНАЛ ─────────────────────────────────────── */
-  .finale{
-    min-height:92svh;
-    display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;
-  }
-  .finale h2{
-    font-size:clamp(2.1rem,9vw,3rem);
-    color:var(--wine);line-height:1.15;
-  }
-  .finale h2 em{font-style:italic;color:var(--pink-500)}
-
-  .buttons{
-    margin-top:40px;
-    display:flex;gap:16px;align-items:center;justify-content:center;
-    position:relative;width:100%;height:66px;
-  }
-  .btn{
-    border:none;
-    font-family:'Montserrat',sans-serif;
-    font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
-    padding:17px 34px;border-radius:100px;
-    cursor:pointer;
-    transition:transform .25s var(--ease),box-shadow .25s var(--ease);
-  }
-  .btn-yes{
-    background:linear-gradient(140deg,var(--pink-400),var(--pink-500));
-    color:#fff;
-    box-shadow:0 12px 30px rgba(217,115,155,.4);
-  }
-  .btn-yes:active{transform:scale(.95)}
-  .btn-no{
-    background:rgba(255,255,255,.8);
-    color:var(--pink-500);
-    border:1px solid var(--pink-200);
-    position:relative;
-    transition:transform .35s var(--ease);
-  }
-
-  .answer{
-    margin-top:38px;
-    opacity:0;transform:translateY(20px) scale(.94);
-    transition:all 1s var(--ease);
-    pointer-events:none;
-  }
-  .answer.show{opacity:1;transform:none}
-  .answer .big{
-    font-family:'Cormorant Garamond',serif;
-    font-size:clamp(1.7rem,7.5vw,2.3rem);
-    font-style:italic;color:var(--pink-500);
-  }
-  .answer .small{
-    margin-top:12px;font-size:.92rem;font-weight:300;color:#8b6274;
-  }
-  .buttons.hidden{opacity:0;transform:scale(.9);pointer-events:none;transition:all .6s var(--ease);height:0;margin-top:0}
-
-  footer{
-    padding:60px 0 46px;text-align:center;
-  }
-  footer .heart{color:var(--pink-400);font-size:1.1rem}
-  footer p{
-    font-family:'Caveat',cursive;
-    font-size:1.25rem;color:var(--pink-500);margin-top:8px;
-  }
-
-  /* сердечки-конфетти */
-  .confetti{
-    position:fixed;top:-30px;
-    font-size:18px;
-    pointer-events:none;z-index:50;
-    animation:confetti-fall linear forwards;
-  }
-  @keyframes confetti-fall{
-    0%{transform:translateY(0) rotate(0);opacity:1}
-    100%{transform:translateY(110vh) rotate(540deg);opacity:0}
+    .grain,.beam,.bulbs b,.filmstrip::before,.filmstrip::after,.dust{animation:none}
+    .curtain,.valance{transition-duration:.01s}
   }
 </style>
 </head>
-<body>
+<body class="locked">
 
-<div class="bg"></div>
-<div class="petals" id="petals" aria-hidden="true"></div>
+<div class="beam" aria-hidden="true"></div>
+<div class="dust" id="dust" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
 
-<!-- ══ HERO ══════════════════════════════════════ -->
-<header class="hero">
-  <div class="heart-seal reveal in">
-    <svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 018-3 4.6 4.6 0 018 3c0 5.8-8 11-8 11z"/></svg>
+<!-- занавес -->
+<div class="valance" aria-hidden="true"></div>
+<div class="curtain l" aria-hidden="true"></div>
+<div class="curtain r" aria-hidden="true"></div>
+
+<!-- тёмный зал перед показом -->
+<div id="intro">
+  <div id="introContent">
+    <p class="intro-small">Свет гаснет</p>
+    <p class="intro-title">Для тебя подготовлен<br>особый показ</p>
+    <div class="play" id="play" role="button" tabindex="0" aria-label="Начать сеанс">
+      <svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>
+    </div>
+    <p class="intro-hint">нажми, чтобы начать сеанс</p>
   </div>
-
-  <p class="kicker reveal" style="--d:180ms">Моей будущей жене</p>
-
-  <h1 class="reveal" style="--d:340ms">
-    Самира,
-    <em>я люблю тебя</em>
-  </h1>
-
-  <p class="sub reveal" style="--d:520ms">
-    Без повода. Просто потому, что это правда. Пролистай вниз.
-  </p>
-
-  <div class="divider reveal" style="--d:700ms"></div>
-
-  <div class="scroll-hint">
-    <span>вниз</span>
-    <i class="arrow"></i>
+  <div class="leader" id="leader" aria-hidden="true">
+    <div class="leader-ring" id="ring"><span class="leader-num" id="num">3</span></div>
   </div>
-</header>
+</div>
 
-<!-- ══ ВСТУПЛЕНИЕ ════════════════════════════════ -->
-<section>
-  <div class="wrap">
-    <div class="envelope-stage" style="margin-bottom:11vh">
-      <div class="envelope reveal" role="button" tabindex="0" aria-label="Открыть конверт с фото">
-        <div class="env-body"></div>
-        <div class="env-flap"></div>
-        <div class="env-seal">
-          <svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 018-3 4.6 4.6 0 018 3c0 5.8-8 11-8 11z"/></svg>
+<main>
+
+  <!-- ══ ТИТУЛ ══════════════════════════════════════ -->
+  <header class="hero">
+    <p class="studio reveal" style="--d:200ms">Твой муж представляет</p>
+    <h1 class="reveal" style="--d:500ms">Вечер<em>для двоих</em></h1>
+    <p class="tag reveal" style="--d:800ms">Премьера. Один показ. Один-единственный зритель&nbsp;— ты.</p>
+    <p class="stars reveal" style="--d:1050ms">★★★★★</p>
+    <div class="scroll-hint"><span>листай</span><i></i></div>
+  </header>
+
+  <div class="wrap"><div class="filmstrip reveal"></div></div>
+
+  <!-- ══ ТИТРЫ ══════════════════════════════════════ -->
+  <section class="credits">
+    <div class="wrap">
+      <span class="eyebrow reveal">В ролях</span>
+
+      <div class="credit reveal">
+        <div class="role">В главной роли</div>
+        <div class="name"><em>Самира</em></div>
+      </div>
+      <div class="credit reveal">
+        <div class="role">Сценарий и постановка</div>
+        <div class="name">Твой муж</div>
+      </div>
+      <div class="credit reveal">
+        <div class="role">Жанр</div>
+        <div class="name">Романтика</div>
+      </div>
+      <div class="credit reveal">
+        <div class="role">Продолжительность</div>
+        <div class="name">Весь вечер</div>
+      </div>
+      <div class="credit reveal">
+        <div class="role">Возрастное ограничение</div>
+        <div class="name">Только для<br><em>любимой жены</em></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ГЛАВНАЯ СЦЕНА ══════════════════════════════ -->
+  <section class="scene">
+    <div class="wrap">
+      <span class="eyebrow reveal">Главная сцена</span>
+      <p class="lead reveal">
+        Я долго думал, как сказать это красиво.<br>
+        А потом понял&nbsp;— лучше просто <em>показать</em>.
+      </p>
+
+      <div class="marquee reveal" style="--d:200ms">
+        <div class="bulbs" id="bulbs" aria-hidden="true"></div>
+        <div class="now">Скоро на экране</div>
+        <div class="big">Завтра<br><span>в 17:00</span></div>
+        <div class="small">приглашаю тебя в кино</div>
+      </div>
+
+      <p class="after reveal">Только ты, я, большой экран и попкорн на двоих.</p>
+      <p class="after reveal" style="--d:150ms">Телефон можно оставить в кармане&nbsp;— сегодня я хочу смотреть на тебя, а не в экран. Ну, почти.</p>
+    </div>
+  </section>
+
+  <!-- ══ БИЛЕТ ══════════════════════════════════════ -->
+  <section class="ticket-section">
+    <div class="wrap">
+      <span class="eyebrow reveal">Твой билет</span>
+
+      <div class="ticket-wrap reveal">
+        <div class="ticket" id="ticket">
+          <div class="t-main">
+            <div class="t-head">
+              <span class="t-brand">Входной билет</span>
+              <span class="t-no">№ 0001</span>
+            </div>
+            <div class="t-title">Кино <em>с&nbsp;мужем</em></div>
+            <div class="t-grid">
+              <div><small>Дата</small><strong id="tDate">Завтра, 7 ноября</strong></div>
+              <div><small>Начало</small><strong>17:00</strong></div>
+              <div><small>Ряд</small><strong>Последний 😉</strong></div>
+              <div><small>Место</small><strong>Рядом со мной</strong></div>
+              <div><small>Фильм</small><strong>Сюрприз</strong></div>
+              <div><small>Дресс-код</small><strong>Твоя улыбка</strong></div>
+            </div>
+            <p class="t-note">Попкорн и обнимашки&nbsp;— за мой счёт</p>
+          </div>
+          <div class="t-stub" id="stub" role="button" tabindex="0" aria-label="Оторвать корешок и подтвердить">
+            <span class="stub-label">Контроль</span>
+            <span class="stub-time">17:00</span>
+            <span class="barcode"></span>
+            <span class="stub-cta">оторви&nbsp;→</span>
+          </div>
         </div>
       </div>
 
-      <p class="env-hint reveal" style="--d:200ms">открой конверт</p>
+      <button class="tear-btn" id="tearBtn">Иду! Отрываю корешок</button>
+      <p class="tear-hint" id="tearHint">или просто нажми на корешок билета</p>
 
-      <div class="letter">
-        <figure class="photo-card">
-          <img src="i.webp" alt="Наше фото">
-          <figcaption>моя любимая ♡</figcaption>
-        </figure>
+      <div class="confirmed" id="confirmed" aria-live="polite">
+        <span class="stamp">Место забронировано</span>
+        <p>Жду тебя завтра в 17:00.<br>Ты&nbsp;— лучшее, что со мной случалось.</p>
       </div>
     </div>
+  </section>
 
-    <p class="lead reveal">
-      Скоро ты станешь моей <span class="accent">женой</span>.<br>
-      А я всё ещё не перестаю удивляться.
-    </p>
-    <p class="body-text reveal" style="--d:200ms">
-      Мы уже вместе. Мы уже знаем друг друга — не только с красивой стороны.
-      И от этого я люблю тебя только сильнее.
-    </p>
-    <p class="body-text reveal" style="--d:340ms">
-      Мне не нужен повод, чтобы сказать это. Просто хочу,
-      чтобы ты слышала почаще.
-    </p>
-  </div>
-</section>
-
-<!-- ══ ОТКРЫТКИ ══════════════════════════════════ -->
-<section>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <span class="eyebrow">Открой каждую</span>
-      <h2>За что я тебя <em>люблю</em></h2>
-    </div>
-
-    <div class="cards" id="cards">
-
-      <article class="card reveal" style="--d:0ms">
-        <div class="card-inner">
-          <div class="face front">
-            <span class="icon">🌸</span>
-            <span class="label">Каждое утро</span>
-            <span class="tap">нажми</span>
-          </div>
-          <div class="face back">
-            <p>Просыпаться и знать, что ты есть у меня — это уже больше, чем я когда-либо просил у жизни.</p>
-            <div class="sig">— и так каждый день</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card reveal" style="--d:100ms">
-        <div class="card-inner">
-          <div class="face front">
-            <span class="icon">💌</span>
-            <span class="label">Наш дом</span>
-            <span class="tap">нажми</span>
-          </div>
-          <div class="face back">
-            <p>Дом — это давно уже не стены. Дом — это ты. Где ты, там я и хочу возвращаться.</p>
-            <div class="sig">— моё тихое место</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card reveal" style="--d:200ms">
-        <div class="card-inner">
-          <div class="face front">
-            <span class="icon">🌙</span>
-            <span class="label">Наши будни</span>
-            <span class="tap">нажми</span>
-          </div>
-          <div class="face back">
-            <p>Мне не нужны праздники. Мне хватает вечера, тишины и тебя рядом. В этом вся любовь.</p>
-            <div class="sig">— и так всю жизнь</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card reveal" style="--d:300ms">
-        <div class="card-inner">
-          <div class="face front">
-            <span class="icon">💍</span>
-            <span class="label">Скоро свадьба</span>
-            <span class="tap">нажми</span>
-          </div>
-          <div class="face back">
-            <p>Совсем скоро я назову тебя своей женой. И это лучшее решение, которое я принимал.</p>
-            <div class="sig">— считаю дни</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card reveal" style="--d:400ms">
-        <div class="card-inner">
-          <div class="face front">
-            <span class="icon">🤍</span>
-            <span class="label">Моё обещание</span>
-            <span class="tap">нажми</span>
-          </div>
-          <div class="face back">
-            <p>В хорошие дни и в тяжёлые — я буду рядом. Не потому что надо, а потому что хочу.</p>
-            <div class="sig">— обещаю тебе</div>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══ ЦИТАТА ════════════════════════════════════ -->
-<section>
-  <div class="wrap">
-    <div class="quote reveal">
-      <span class="mark">&ldquo;</span>
-      <p>Я не знаю, что будет через двадцать лет.<br>Но я знаю, чью руку буду держать.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ══ ПИСЬМО ════════════════════════════════════ -->
-<section>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <span class="eyebrow">Самое главное</span>
-      <h2>Письмо <em>для тебя</em></h2>
-    </div>
-
-    <div class="envelope-stage" id="stage">
-      <div class="envelope reveal" id="envelope" role="button" tabindex="0" aria-label="Открыть письмо">
-        <div class="env-body"></div>
-        <div class="env-flap"></div>
-        <div class="env-seal">
-          <svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 018-3 4.6 4.6 0 018 3c0 5.8-8 11-8 11z"/></svg>
-        </div>
+  <!-- ══ ОТСЧЁТ ═════════════════════════════════════ -->
+  <section class="countdown">
+    <div class="wrap">
+      <span class="eyebrow reveal" id="countTitle">До начала сеанса</span>
+      <div class="clock reveal" id="clock">
+        <div class="unit"><b id="cH">00</b><small>часов</small></div>
+        <div class="unit"><b id="cM">00</b><small>минут</small></div>
+        <div class="unit"><b id="cS">00</b><small>секунд</small></div>
       </div>
-
-      <p class="env-hint reveal" style="--d:200ms">нажми на конверт</p>
-
-      <div class="letter" id="letter">
-        <div class="letter-paper">
-          <p>Здравствуй, родная.</p>
-          <p>
-            Мы уже прошли вместе достаточно, чтобы я перестал говорить это красиво.
-            Скажу просто: я люблю тебя. Сегодня, вчера и завтра.
-          </p>
-          <p>
-            Люблю не за что-то. Люблю тебя настоящую — уставшую, смешную,
-            иногда сердитую, ту, что рядом каждый день, а не только по праздникам.
-          </p>
-          <p>
-            Совсем скоро мы станем семьёй. И я хочу, чтобы ты знала:
-            я выбрал тебя не на свадьбе. Я выбираю тебя каждое утро, снова и снова.
-          </p>
-          <p>
-            Спасибо, что ты моя. Спасибо, что позволяешь быть твоим.
-          </p>
-          <div class="sign">твой навсегда ♡</div>
-        </div>
-      </div>
+      <p class="count-note reveal" id="countNote">Я уже считаю.</p>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ══ ФИНАЛ ═════════════════════════════════════ -->
-<section class="finale">
-  <div class="wrap">
-    <h2 class="reveal">Скажешь мне <em>«да»</em><br>ещё раз?</h2>
+  <div class="wrap"><div class="filmstrip reveal"></div></div>
 
-    <div class="buttons" id="buttons">
-      <button class="btn btn-yes" id="yes">Да</button>
-      <button class="btn btn-no" id="no">Нет</button>
+  <!-- ══ ФИНАЛ ══════════════════════════════════════ -->
+  <section class="finale">
+    <div class="wrap">
+      <div class="the-end reveal"><s>Конец</s></div>
+      <p class="reveal" style="--d:200ms">Это не конец фильма. Это только начало вечера.</p>
+      <p class="sign reveal" style="--d:400ms">люблю тебя ♡</p>
     </div>
+  </section>
 
-    <div class="answer" id="answer">
-      <p class="big">И так будет всю жизнь.</p>
-      <p class="small">Осталось совсем немного до того дня, когда ты скажешь это при всех.</p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <span class="heart">♡</span>
-  <p>сделано с любовью, для тебя одной</p>
-</footer>
+</main>
 
 <script>
 (function(){
@@ -723,114 +622,164 @@
 
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ── лепестки ─────────────────────────────── */
+  /* ── дата сеанса: 7 ноября 2026, 17:00 (местное время) ── */
+  var SHOW = new Date(2026, 10, 7, 17, 0, 0);
+
+  /* ── пылинки в луче проектора ─────────────────── */
   if(!reduced){
-    var box = document.getElementById('petals');
-    for(var i=0;i<16;i++){
-      var p = document.createElement('div');
-      p.className = 'petal';
-      var size = 8 + Math.random()*12;
-      p.style.left = (Math.random()*100)+'vw';
-      p.style.width = size+'px';
-      p.style.height = size+'px';
-      p.style.animationDuration = (10+Math.random()*12)+'s';
-      p.style.animationDelay = (-Math.random()*20)+'s';
-      var inner = document.createElement('span');
-      inner.style.animationDuration = (2+Math.random()*2.5)+'s';
-      p.appendChild(inner);
-      box.appendChild(p);
+    var dust = document.getElementById('dust');
+    for(var i=0;i<26;i++){
+      var d = document.createElement('i');
+      var s = 1 + Math.random()*2.5;
+      d.style.width = d.style.height = s+'px';
+      d.style.left = (30 + Math.random()*40)+'vw';
+      d.style.top = (40 + Math.random()*60)+'vh';
+      d.style.setProperty('--dx', ((Math.random()*2-1)*12)+'vw');
+      d.style.animationDuration = (9 + Math.random()*10)+'s';
+      d.style.animationDelay = (-Math.random()*18)+'s';
+      dust.appendChild(d);
     }
   }
 
-  /* ── появление при скролле ────────────────── */
+  /* ── лампочки по периметру табло ──────────────── */
+  function placeBulbs(){
+    var box = document.getElementById('bulbs');
+    box.innerHTML = '';
+    var w = box.clientWidth, h = box.clientHeight;
+    if(!w || !h) return;
+    var step = 26;
+    var nx = Math.max(2, Math.round(w/step)), ny = Math.max(2, Math.round(h/step));
+    var pts = [];
+    for(var x=0;x<=nx;x++){ pts.push([x/nx*w,0]); pts.push([x/nx*w,h]); }
+    for(var y=1;y<ny;y++){ pts.push([0,y/ny*h]); pts.push([w,y/ny*h]); }
+    pts.forEach(function(p){
+      var b = document.createElement('b');
+      b.style.left = p[0]+'px'; b.style.top = p[1]+'px';
+      box.appendChild(b);
+    });
+  }
+  placeBulbs();
+  var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(placeBulbs, 150); });
+
+  /* ── появление при скролле ────────────────────── */
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  },{threshold:0.15, rootMargin:'0px 0px -8% 0px'});
-
-  document.querySelectorAll('.reveal').forEach(function(el){
-    if(!el.classList.contains('in')) io.observe(el);
-  });
-
-  /* ── открытки ─────────────────────────────── */
-  document.querySelectorAll('.card').forEach(function(card){
-    card.addEventListener('click', function(){
-      card.classList.toggle('open');
-    });
-  });
-
-  /* ── конверты ─────────────────────────────── */
-  document.querySelectorAll('.envelope-stage').forEach(function(stage){
-    var env = stage.querySelector('.envelope');
-    var letter = stage.querySelector('.letter');
-    if(!env || !letter) return;
-
-    function openLetter(){
-      if(env.classList.contains('open')) return;
-      env.classList.add('open');
-      stage.classList.add('opened');
-      setTimeout(function(){
-        letter.classList.add('show');
-        setTimeout(function(){
-          letter.scrollIntoView({behavior: reduced?'auto':'smooth', block:'center'});
-        }, 420);
-      }, 520);
-    }
-
-    env.addEventListener('click', openLetter);
-    env.addEventListener('keydown', function(e){
-      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openLetter(); }
-    });
-  });
-
-  /* ── финал: кнопка «нет» убегает ──────────── */
-  var no = document.getElementById('no');
-  var dodges = 0;
-  var phrases = ['Точно?','Подумай ещё','Не туда','Ну пожалуйста','Попробуй «Да»'];
-
-  function dodge(e){
-    if(e && e.cancelable) e.preventDefault();
-    dodges++;
-    var maxX = 110, maxY = 44;
-    var x = (Math.random()*2-1)*maxX;
-    var y = (Math.random()*2-1)*maxY;
-    no.style.transform = 'translate('+x+'px,'+y+'px) scale('+Math.max(0.55, 1-dodges*0.08)+')';
-    if(dodges<=phrases.length) no.textContent = phrases[dodges-1];
-    if(dodges>5){ no.style.opacity='0'; no.style.pointerEvents='none'; }
+  },{threshold:.15, rootMargin:'0px 0px -6% 0px'});
+  function watchReveals(){
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
   }
-  no.addEventListener('mouseenter', dodge);
-  no.addEventListener('touchstart', dodge, {passive:false});
-  no.addEventListener('click', function(e){ e.preventDefault(); dodge(); });
 
-  /* ── финал: «да» + сердечки ───────────────── */
-  var yes = document.getElementById('yes');
-  var answer = document.getElementById('answer');
-  var buttons = document.getElementById('buttons');
+  /* ── старт сеанса: отсчёт → занавес ───────────── */
+  var intro = document.getElementById('intro');
+  var play = document.getElementById('play');
+  var started = false;
 
-  yes.addEventListener('click', function(){
-    buttons.classList.add('hidden');
-    setTimeout(function(){ answer.classList.add('show'); }, 400);
-    if(!reduced) rain();
-  });
+  function openCurtain(){
+    intro.classList.add('gone');
+    document.body.classList.add('open');
+    setTimeout(function(){ document.body.classList.remove('locked'); }, 600);
+    setTimeout(watchReveals, reduced ? 0 : 900);
+  }
 
-  function rain(){
-    var hearts = ['♡','💗','🌸','💖','🤍','💕'];
-    var n = 0;
+  function start(){
+    if(started) return; started = true;
+    if(reduced){ openCurtain(); return; }
+    document.getElementById('introContent').style.display = 'none';
+    var leader = document.getElementById('leader');
+    var ring = document.getElementById('ring');
+    var num = document.getElementById('num');
+    leader.classList.add('on');
+    var n = 3, t0 = performance.now(), per = 900;
+    function frame(t){
+      var el = t - t0;
+      var k = Math.floor(el/per);
+      var cur = n - k;
+      if(cur < 1){ leader.classList.remove('on'); intro.style.background='#000'; setTimeout(openCurtain, 250); return; }
+      num.textContent = cur;
+      ring.style.setProperty('--a', ((el % per)/per*360)+'deg');
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  play.addEventListener('click', start);
+  play.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); start(); } });
+
+  /* ── отсчёт до сеанса ─────────────────────────── */
+  var cH = document.getElementById('cH'), cM = document.getElementById('cM'), cS = document.getElementById('cS');
+  var countTitle = document.getElementById('countTitle'), countNote = document.getElementById('countNote');
+  var clock = document.getElementById('clock');
+  function pad(v){ return (v<10?'0':'')+v; }
+
+  // подпись даты на билете: «Завтра» / «Сегодня» / просто дата
+  (function(){
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var showDay = new Date(SHOW.getFullYear(), SHOW.getMonth(), SHOW.getDate());
+    var diff = Math.round((showDay - today)/86400000);
+    var label = diff === 1 ? 'Завтра, 7 ноября' : diff === 0 ? 'Сегодня, 7 ноября' : 'Сб, 7 ноября';
+    document.getElementById('tDate').textContent = label;
+  })();
+
+  function tick(){
+    var ms = SHOW - new Date();
+    if(ms <= 0){
+      clock.style.display = 'none';
+      if(ms > -3*3600000){
+        countTitle.textContent = 'Сеанс начался';
+        countNote.textContent = 'Я рядом. Попкорн уже у меня в руках 🍿';
+      } else {
+        countTitle.textContent = 'Спасибо за этот вечер';
+        countNote.textContent = 'Повторим? Я уже выбираю следующий фильм.';
+      }
+      return;
+    }
+    var sec = Math.floor(ms/1000);
+    var h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), s = sec%60;
+    cH.textContent = pad(h); cM.textContent = pad(m); cS.textContent = pad(s);
+    setTimeout(tick, 1000 - (Date.now() % 1000));
+  }
+  tick();
+
+  /* ── оторвать корешок ─────────────────────────── */
+  var ticket = document.getElementById('ticket');
+  var stub = document.getElementById('stub');
+  var tearBtn = document.getElementById('tearBtn');
+  var tearHint = document.getElementById('tearHint');
+  var confirmed = document.getElementById('confirmed');
+  var torn = false;
+
+  function tear(){
+    if(torn) return; torn = true;
+    ticket.classList.add('torn');
+    tearBtn.classList.add('hide');
+    tearHint.classList.add('hide');
+    if(navigator.vibrate) try{ navigator.vibrate([30,40,60]); }catch(e){}
+    setTimeout(function(){
+      confirmed.classList.add('show');
+      if(!reduced) shower();
+    }, 650);
+  }
+  stub.addEventListener('click', tear);
+  stub.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); tear(); } });
+  tearBtn.addEventListener('click', tear);
+
+  function shower(){
+    var items = ['🍿','🍿','🍿','❤️','💛','🎬','✨','🍿'];
+    var k = 0;
     var timer = setInterval(function(){
-      var h = document.createElement('div');
-      h.className = 'confetti';
-      h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-      h.style.left = (Math.random()*100)+'vw';
-      h.style.fontSize = (14+Math.random()*22)+'px';
-      h.style.animationDuration = (2.6+Math.random()*2.4)+'s';
-      document.body.appendChild(h);
-      setTimeout(function(){ h.remove(); }, 5200);
-      if(++n > 70) clearInterval(timer);
-    }, 90);
+      var p = document.createElement('div');
+      p.className = 'pop';
+      p.textContent = items[Math.floor(Math.random()*items.length)];
+      p.style.left = (Math.random()*100)+'vw';
+      p.style.fontSize = (16 + Math.random()*20)+'px';
+      p.style.animationDuration = (2.6 + Math.random()*2.4)+'s';
+      p.style.setProperty('--r', ((Math.random()*2-1)*540)+'deg');
+      document.body.appendChild(p);
+      setTimeout(function(){ p.remove(); }, 5200);
+      if(++k > 80) clearInterval(timer);
+    }, 70);
   }
 })();
 </script>
